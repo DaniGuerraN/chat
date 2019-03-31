@@ -1,27 +1,36 @@
 <!doctype html>
 <html>
   <head>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <title>Socket.IO chat</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
+      body { font: 20px Helvetica, Arial; background: #40E0D0; background: -webkit-linear-gradient(to right, #FF0080, #FF8C00, #40E0D0);background: linear-gradient(to right, #FF0080, #FF8C00, #40E0D0); }
       form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
       form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; border-radius: 0% }
-      #messages li:nth-child(odd) { background: #43FA40; }
+      #messages li:nth-child(odd) { background: #005AA7;  
+      background: -webkit-linear-gradient(to left, #FFFDE4, #005AA7);  
+      background: linear-gradient(to right, #FFFDE4, #005AA7); 
+ }
     </style>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-    <form action='http://localhost:3000/upload' method="POST" enctype="multipart/form-data">
-      <input type="file" name="file">
-      <input type="submit" value="Subir">
-</form>
+    <div>
+    <center>  <H1 class="card-title"><button class="btn btn-link" onclick="location.href='http://localhost:3000/'">🏠</button> Chat</H1> </center>
+    <div >
+    <ul class="list-group list-group-flush" id="messages"></ul>
+    </div>
+  </div>
+  <footer>
+   <center><form  action="">
+      <input class="form-control" type="text"  placeholder="Escribe tu mensaje ..." id="m"  autocomplete="off"/><button type="submit" class="btn btn-success mb-2">Enviar</button>
+      <button type="submit" class="btn btn-success mb-2">Adjuntar archivo</button>
+    </form></center> 
+</footer>
   </body>
 </html>
 <script src="/socket.io/socket.io.js"></script>
@@ -36,7 +45,7 @@
         return false;
       });
       socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+        $('#messages').append($('<li class="list-group-item">').text(msg));
       });
     });
   </script>
