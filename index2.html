@@ -36,16 +36,50 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-    $(function () {
-      var socket = io();
-      $('form').submit(function(e){
-        e.preventDefault(); // prevents page reloading
-        socket.emit('chat message', $('#m').val());
-        $('#m').val('');
-        return false;
-      });
-      socket.on('chat message', function(msg){
-        $('#messages').append($('<li class="list-group-item">').text(msg));
-      });
+  $(function () {
+    var socket = io();
+    $('form').submit(function(e){
+      e.preventDefault(); // prevents page reloading
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return false;
     });
-  </script>
+    socket.on('chat message', function(msg){
+      $('#messages').append($('<li>').text(msg));
+          notifyMe(msg);
+    });
+  });
+
+
+  function notifyMe(message) {
+    //Reviso si el navegador soporta las notificaciones
+    if (!("Notification" in window)) {
+    alert("Notificaciones no soportadas por el navegador");
+    }
+    else if (Notification.permission === "granted") {
+    // si jala, creemos una notificación
+    var options = {
+      body: message,
+      dir : "ltr"
+    };
+    var notification = new Notification("Nuevo mensaje",options);
+    }
+    // Por si necesitamos permisos
+    else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+      // Guardar permisos, creo
+      if (!('permission' in Notification)) {
+      Notification.permission = permission;
+      }
+      // Si el usuario dice que simón, crea notificación
+      if (permission === "granted") {
+      var options = {
+          body: message,
+          dir : "ltr"
+      };
+      var notification = new Notification("Mensaje nuevo",options);
+      }
+    });
+    }
+}
+</script>
